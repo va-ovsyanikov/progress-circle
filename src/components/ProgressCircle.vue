@@ -41,7 +41,9 @@
         style="transition: stroke-dashoffset 0.3s"
       ></circle>
       <text id="count" x="50%" y="50%" fill="#EBE424" text-anchor="middle" dy="7" font-size="20">
-        {{ Math.round(value * 100) }}%
+        {{
+          value <= 1 && value > 0 ? Math.round(value * 100) : value < 0 ? 0 : value > 1 ? 100 : 0
+        }}%
       </text>
     </svg>
   </div>
@@ -61,7 +63,9 @@ export default defineComponent({
       const circumference = radius * 2 * Math.PI
       this.dashArray = circumference
       circle.style.strokeDasharray = String(circumference)
-      circle.style.strokeDashoffset = String(circumference - val * circumference)
+      circle.style.strokeDashoffset = String(
+        circumference - (val <= 1 && val > 0 ? val : val < 0 ? 0 : val > 1 ? 1 : 0) * circumference
+      )
     }
   },
   watch: {
